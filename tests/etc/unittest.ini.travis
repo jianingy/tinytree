@@ -1,2 +1,2 @@
 [database]
-connection = postgresql://postgresql@localhost/ci
+connection = postgresql://postgres@localhost/ci
