@@ -22,7 +22,7 @@ from logging.config import fileConfig
 from sqlalchemy import create_engine, pool
 import pkgutil
 
-from tinytree import models
+from treestore import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -39,7 +39,7 @@ for loader, module_name, _ in pkgutil.walk_packages(models.__path__):
     loader.find_module(module_name).load_module(module_name)
 
 # set the target for 'autogenerate' support
-from tinytree.models.base import BASE
+from treestore.models.base import BASE
 target_metadata = BASE.metadata
 
 

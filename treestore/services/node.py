@@ -23,9 +23,9 @@ from sqlalchemy import text
 
 import six
 
-from tinytree.db.api import model_query, get_session
-from tinytree.models.tree_node import TreeNode
-from tinytree.exceptions import InvalidValue, NodeNotFound, InvalidQuery
+from treestore.db.api import model_query, get_session
+from treestore.models.tree_node import TreeNode
+from treestore.exceptions import InvalidValue, NodeNotFound, InvalidQuery
 
 
 def get_node(path):

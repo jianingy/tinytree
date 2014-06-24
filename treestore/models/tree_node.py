@@ -22,8 +22,8 @@ from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.ext.mutable import MutableDict
 import sqlalchemy as sa
 
-from tinytree.models.base import BASE
-from tinytree.db.sqltypes import LTree
+from treestore.models.base import BASE
+from treestore.db.sqltypes import LTree
 
 
 class TreeNode(BASE, TableNameMixin, HasIdMixin, TimestampMixin):

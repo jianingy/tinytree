@@ -113,7 +113,7 @@ def main():
         os.path.join(os.path.dirname(__file__), 'alembic.ini')
     )
     config.set_main_option('script_location',
-                           'tinytree.models.migration:alembic_migrations')
+                           'treestore.models.migration:alembic_migrations')
 
     config.app_config = CONF
 

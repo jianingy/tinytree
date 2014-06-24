@@ -12,6 +12,6 @@ before_script:
   - psql ci -c 'CREATE EXTENSION IF NOT EXISTS ltree;' -U postgres
   - pip install -r requirements.txt
   - python ./setup.py develop
-  - tinytree-db-manage --config-file tests/etc/unittest.ini upgrade head
+  - treestore-db-manage --config-file tests/etc/unittest.ini upgrade head
 script:
   - tox

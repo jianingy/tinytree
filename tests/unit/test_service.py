@@ -24,10 +24,10 @@ from testtools import TestCase
 
 import fixtures
 
-from tinytree.db.api import get_engine
-from tinytree.exceptions import NodeNotFound, InvalidQuery
-from tinytree.models.tree_node import TreeNode
-from tinytree.services import node as node_service
+from treestore.db.api import get_engine
+from treestore.exceptions import NodeNotFound, InvalidQuery
+from treestore.models.tree_node import TreeNode
+from treestore.services import node as node_service
 
 CONF = cfg.CONF
 CONF.register_opts(options.database_opts, 'database')
