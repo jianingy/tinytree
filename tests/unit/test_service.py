@@ -51,6 +51,10 @@ class TreeNodeData(DataSet):
         canonical_path = 'com.example.disabled'
         values = {}
 
+    class net_sample_arbitrary:
+        canonical_path = 'net.sample.arbitrary'
+        values = {'site': 'xxx'}
+
 
 class DBConnectionFixture(fixtures.Fixture):
 
@@ -93,7 +97,7 @@ class TestService(TestCase):
     def test_search_by_path(self):
         nodes = node_service.search_by_path('com.example.*{1}')
         paths = map(lambda x: x.canonical_path, nodes)
-        self.assertEqual(len(paths), 3)
+        self.assertEqual(len(paths), 4)
 
     def test_search_by_values(self):
         nodes = node_service.search_by_values(site='cn2')
@@ -126,5 +130,16 @@ class TestService(TestCase):
                           node_service.get_node,
                           'com.example.disabled')
 
-    def test_delete_missing_node(self):
+    def test_delete_missing_node(spelf):
         node_service.delete_node('a.b.c')
+
+    def test_update_node(self):
+        node = node_service.update_node('net.sample.arbitrary',
+                                        dict(site='yyy'))
+        self.assertIsInstance(node, TreeNode)
+        self.assertEqual(node.values['site'], 'yyy')
+
+    def test_update_missing_node(self):
+        self.assertRaises(NodeNotFound, node_service.update_node,
+                          'net.sample.missing',
+                          dict(site='yyy'))

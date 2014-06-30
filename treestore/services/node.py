@@ -78,12 +78,15 @@ def update_node(path, values):
         raise InvalidValue(reason=_("Value must be a dict"))
     session = get_session()
     with session.begin(subtransactions=True):
-        node_query = model_query(TreeNode, session=session).filter(
-            TreeNode.canonical_path == path)
-        node = node_query.one()
-        node.values = values
-        session.add(node)
-        return node
+        try:
+            node_query = model_query(TreeNode, session=session)
+            node_query = node_query.filter(TreeNode.canonical_path == path)
+            node = node_query.one()
+            node.values = values
+            session.add(node)
+            return node
+        except orm_exc.NoResultFound:
+            raise NodeNotFound(path=path)
 
 
 def delete_node(path):
