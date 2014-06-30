@@ -73,6 +73,19 @@ def create_node(path, values):
         session.add(node)
 
 
+def update_node(path, values):
+    if not isinstance(values, dict):
+        raise InvalidValue(reason=_("Value must be a dict"))
+    session = get_session()
+    with session.begin(subtransactions=True):
+        node_query = model_query(TreeNode, session=session).filter(
+            TreeNode.canonical_path == path)
+        node = node_query.one()
+        node.values = values
+        session.add(node)
+        return node
+
+
 def delete_node(path):
     node_query = model_query(TreeNode).filter(TreeNode.canonical_path == path)
     node_query.delete()
