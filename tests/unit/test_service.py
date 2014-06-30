@@ -97,7 +97,7 @@ class TestService(TestCase):
     def test_search_by_path(self):
         nodes = node_service.search_by_path('com.example.*{1}')
         paths = map(lambda x: x.canonical_path, nodes)
-        self.assertEqual(len(paths), 4)
+        self.assertEqual(len(paths), 3)
 
     def test_search_by_values(self):
         nodes = node_service.search_by_values(site='cn2')
@@ -138,6 +138,7 @@ class TestService(TestCase):
                                         dict(site='yyy'))
         self.assertIsInstance(node, TreeNode)
         self.assertEqual(node.values['site'], 'yyy')
+        node_service.update_node('net.sample.arbitrary', dict(site='xxx'))
 
     def test_update_missing_node(self):
         self.assertRaises(NodeNotFound, node_service.update_node,
