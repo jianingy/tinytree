@@ -83,20 +83,19 @@ class TestService(TestCase):
 
     def test_get_node(self):
         node = node_service.get_node('com.example.corp')
-        self.assertIsInstance(node, TreeNode)
-        self.assertEqual(node.values['num_servers'], '511')
+        self.assertIsInstance(node, dict)
+        self.assertEqual(node['values']['num_servers'], '511')
 
     def test_get_missing_node(self):
         self.assertRaises(NodeNotFound, node_service.get_node, 'a.b.c')
 
     def test_get_descendants(self):
-        nodes = node_service.get_descendants('com.example.cn2')
-        paths = map(lambda x: x.canonical_path, nodes)
+        paths = node_service.get_descendants('com.example.cn2')
         self.assertEqual(len(paths), 2)
 
     def test_search_by_path(self):
         nodes = node_service.search_by_path('com.example.*{1}')
-        paths = map(lambda x: x.canonical_path, nodes)
+        paths = map(lambda x: x['canonical_path'], nodes)
         self.assertEqual(len(paths), 3)
 
     def test_search_by_values(self):
@@ -113,15 +112,15 @@ class TestService(TestCase):
         self.assertRaises(InvalidQuery, node_service.search_by_path, '.....')
 
     def test_create_node_with_empty_value(self):
-        node_service.create_node('com.example.new', {}),
-        self.assertIsInstance(node_service.get_node('com.example.new'),
-                              TreeNode)
-        node_service.delete_node('com.example.new')
+        node_service.create_node('com.example.empty_value', {}),
+        self.assertIsInstance(node_service.get_node('com.example.empty_value'),
+                              dict)
+        node_service.delete_node('com.example.empty_value')
 
     def test_create_node_with_value(self):
         node_service.create_node('com.example.new', {"num_servers": '128'}),
         self.assertIsInstance(node_service.get_node('com.example.new'),
-                              TreeNode)
+                              dict)
         node_service.delete_node('com.example.new')
 
     def test_delete_node(self):
@@ -136,8 +135,8 @@ class TestService(TestCase):
     def test_update_node(self):
         node = node_service.update_node('net.sample.arbitrary',
                                         dict(site='yyy'))
-        self.assertIsInstance(node, TreeNode)
-        self.assertEqual(node.values['site'], 'yyy')
+        self.assertIsInstance(node, dict)
+        self.assertEqual(node['values']['site'], 'yyy')
         node_service.update_node('net.sample.arbitrary', dict(site='xxx'))
 
     def test_update_missing_node(self):

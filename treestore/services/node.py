@@ -19,7 +19,8 @@
 from qg.core.gettextutils import _
 from sqlalchemy import exc as sa_exc
 from sqlalchemy.orm import exc as orm_exc
-from sqlalchemy import text
+#from sqlalchemy import text
+from sqlalchemy.sql.expression import text
 
 import six
 
@@ -32,7 +33,7 @@ def get_node(path):
     try:
         node_query = model_query(TreeNode).filter(
             TreeNode.canonical_path == path)
-        return node_query.one()
+        return dict(node_query.one())
     except orm_exc.NoResultFound:
         raise NodeNotFound(path=path)
 
@@ -41,7 +42,7 @@ def get_descendants(path):
     unbind = text('canonical_path <@ :path')
     bound = unbind.bindparams(path=path)
     node_query = model_query(TreeNode).filter(bound)
-    return node_query.all()
+    return map(lambda x: x.canonical_path, node_query.all())
 
 
 def search_by_path(lquery):
@@ -49,7 +50,7 @@ def search_by_path(lquery):
         unbind = text('canonical_path ~ :lquery')
         bound = unbind.bindparams(lquery=lquery)
         node_query = model_query(TreeNode).filter(bound)
-        return node_query.all()
+        return map(lambda x: dict(x), node_query.all())
     except sa_exc.ProgrammingError:
         raise InvalidQuery(query=lquery)
 
@@ -84,7 +85,7 @@ def update_node(path, values):
             node = node_query.one()
             node.values = values
             session.add(node)
-            return node
+            return dict(node)
         except orm_exc.NoResultFound:
             raise NodeNotFound(path=path)
 
